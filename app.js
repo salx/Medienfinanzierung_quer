@@ -90,8 +90,7 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
         .offset([-10,0])
         .html( function(d){
             if (d.name === "Mitarbeiter"){
-
-                return "<text>2012</br> Umsatz pro MitarbeiterIn: " + format(d3.round(d.value) ) + " €</text>"
+                return "<text>2012</br> Umsatz pro MitarbeiterIn: " + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
                 return "<text>2012</br>" + d.name + ": " + d.value + " Mio. €</text>"
             }
