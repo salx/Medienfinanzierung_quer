@@ -18,9 +18,9 @@ LOKALISIERUNG: was muss ich tun?
     // hier ist ein guter Tipp http://stackoverflow.com/questions/17573797/formatting-y-axis
     // hier ebenfalls zum Lokalisierungs-Problem
 
-Wie kann ich einen Radn um "background2" machen? das CSS wird zwar angewendet aber ist nicht sichtbar 
+Wie kann ich einen Radn um "background2" machen? das CSS wird zwar angewendet aber ist nicht sichtbar
 
-3. 
+3.
 Re-factoring
 
 TODO
@@ -37,6 +37,8 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
         height = 509 - margin.top - margin.bottom,
         //half = height/2-1; //2
         half = width/2 -1;
+
+    var input;
 
     //ordinal scale for medienunternehmen
     var x0 = d3.scale.ordinal()
@@ -69,19 +71,19 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     var yAxis = d3.svg.axis()
     	.scale(y0)
     	.orient("top")//left
-        .ticks(7) 
+        .ticks(7)
     	.tickFormat(d3.format("1s"))
-    // ticks formatieren 
+    // ticks formatieren
     //http://stackoverflow.com/questions/15493303/converting-numbers-on-y-axis-to-string-with-k-for-thousand-d3-js
     var yAxis2 = d3.svg.axis()
     	.scale(y1)
     	.orient("top")//left
         .ticks(7)
         .tickFormat(d3.format("1s"));
-    
+
     var format = d3.format("0,000");
     //var format = d3.format(".,2f")
-    
+
 
     var tip = d3.tip()
         .attr("class", "d3-tip")
@@ -89,7 +91,7 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
         .html( function(d){
             if (d.name === "Mitarbeiter"){
 
-                return "<text>2012</br> Umsatz pro MitarbeiterIn: " + format(d3.round(d.value) ) + " €</text>"   
+                return "<text>2012</br> Umsatz pro MitarbeiterIn: " + format(d3.round(d.value) ) + " €</text>"
             }else{
                 return "<text>2012</br>" + d.name + ": " + d.value + " Mio. €</text>"
             }
@@ -106,18 +108,38 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
 
     var data;
 
-    d3.csv("Medienfinanzierung5.csv", function(error, result){
-        data = result;
+    function sortData( ) {
+      data.sort(function(a, b) {
+        var lA = 1000000;
+        var lB = 1000000;
+        if( a.Land === 'DE' ) {
+          var lA = 0;
+        }
+        if( b.Land === 'DE' ) {
+          var lB = 0;
+        }
 
-    	var mediaNames = [ "Umsatz in Mio Euro", "Mitarbeiter" ]; 
+        if (input === 'angestellte') {
+          return (lA-lB)-(a.mediaValues[1].value-b.mediaValues[1].value);
+        } else {
+          return (lA-lB)-(a.mediaValues[0].value-b.mediaValues[0].value);
+        }
+      });
+    }
+
+    d3.csv("Medienfinanzierung5.csv", function(error, result){
+      data = result;
+    	var mediaNames = [ "Umsatz in Mio Euro", "Mitarbeiter" ];
     	data.forEach(function(d){
-    		d.mediaValues = mediaNames.map(function(name){ return {name: name, value: +d[name]}; }); 
+    		d.mediaValues = mediaNames.map(function(name){ return {name: name, value: +d[name]}; });
     	});
+
+      sortData( );
 
     	//set the domains
     	x0.domain(data.map(function(d) { return d.Unternehmen } ));
     	//x1.domain(mediaNames).rangeRoundBands([0, x0.rangeBand()]); //check
-    	
+
     	function key( name ) {
     		return function(d) {
     			return d[name];
@@ -129,9 +151,6 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     	y0.domain([0, d3.max(umsaetze)]);
     	y1.domain([0, d3.max(mitarbeiter)+500])
 
-        var sorted = data.sort(function(a, b){ return x0(a.mediaValues[1].value)-x0(b.mediaValues[1].value); });
-        
-    	
 		svg.append( 'line' )
 			.attr("class", "line")
 			.attr("x1", half+1 )
@@ -139,14 +158,14 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
 			.attr("y1", -40 )
 			.attr("y2", height+50);
 
-        
+
         svg.append("rect")
             .attr("class", "background1")
             .attr("x", 10)
             .attr("y", height-145)
             .attr("height", 150)
             .attr("width", width+margin.right);
-        
+
         /*
         svg.append("text")
             .attr("y", height)
@@ -158,7 +177,7 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
             .attr("x", 390)
             .text("DEUTSCHLAND");
         */
-        
+
     	svg.append("g")
     		.attr("class", "y axis")
             .attr('transform', 'translate(0,' + (height +30)+')')
@@ -182,7 +201,7 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     		.attr("dy", "0.71em")
     		.style("text-anchor", "end")
     		.text("in 100.00 €");
-        
+
 
     	var unternehmen = svg.selectAll(".unternehmen")
     		.data(data)
@@ -202,10 +221,9 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     		    if( d.name === 'Mitarbeiter' ) {
                     return half+1;
     		    } else {
-                    console.log(d.value)//NaN
     		    	return y0(d.value)-1;
     		    }
-    			
+
     		})
     		.attr("width", function(d){ //vorher: height
     		 if( d.name === "Mitarbeiter" ){
@@ -234,35 +252,16 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     })
 
     function change(){
-        var input = this.id;
+        input = this.id;
         d3.selectAll("li.selected")
             .attr("class", "");
         d3.select(this)
             .attr("class", "selected");
-        
-        //Beispiel: bl.ocks.org/mbostock/3885705
-        data.sort(function(a, b) {
-            var lA = 0;
-            var lB = 0;
-            var isAGermany = a.Land === 'DE';
-            var isBGermany = b.Land === 'DE';
-            if( isAGermany ) {
-                var lA = 1;
-            }
-            if( isBGermany ) {
-                var lB = 1;
-            }
 
-            if (input === 'angestellte') {
-                return (lA-lB)-(a.mediaValues[1].value-b.mediaValues[1].value);
-            } else {
-                //console.log( 'bla')
-                return (lA-lB)-(a.mediaValues[0].value-b.mediaValues[0].value);
-            }
-        });
+        sortData( );
         x0.domain(data.map( function( d ) { return d.Unternehmen; }) );
-        
-        
+
+
         //.map(function(d){ return d. }) hier streut es mich auf. Denn im Beispielcode wird x direkt vegeben, nicht über ein transform
         //.copy() //was ist das?
 
