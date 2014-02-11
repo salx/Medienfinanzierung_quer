@@ -2,37 +2,18 @@
 Feedback Gerd
 
 Feedback Grafik:
-y-Achse: Orientierungslinien - gepunktet/strichliert gar nicht?
-Trennung DE-AT: wie am Besten? (eingekastelt?)
+Button in ORF Farben stylen
 
 Fragen SiFu:
-1.)
-Sorting und Transformationen
+- wie kann ich zwischen dem letzten AT-Balken und dem esten DE einen größeren Abstand machen (nicht einfach, wahrscheinlich)
 
-2.)
-Wie kann ich die Zahlen f.d. Angetstellen im Mouse-Over ergänzen? Zahlen f. MitarbeiterInnen - also wieviele MA...
-LOKALISIERUNG: was muss ich tun?
-// hier steht, wie ich das format ändern kann, aber ich kapier's nicht ganz..und es funkt derzeit nicht.
-    //https://groups.google.com/forum/#!topic/d3-js/NH90E7J7IUo
-    // https://github.com/mbostock/d3/issues/1492
-    // hier ist ein guter Tipp http://stackoverflow.com/questions/17573797/formatting-y-axis
-    // hier ebenfalls zum Lokalisierungs-Problem
-
-Wie kann ich einen Radn um "background2" machen? das CSS wird zwar angewendet aber ist nicht sichtbar
-
-3.
-Re-factoring
-
-TODO
-
-SORTING nach Umsatz oder Umsatz/Ang
-um 90 Grad drehen?
-Positionierung des Buttons ÜBER dem Rand des Bildes
+- aufräumen. und einrücken
+- line-style: crisp edges oder nicht?
 
 */
 
 (function(){
-	var margin = {top: 100, right: 130, bottom: 80, left: 30},
+	var margin = {top: 60, right: 130, bottom: 80, left: 40},
         width = 582 - margin.left - margin.right,
         height = 509 - margin.top - margin.bottom,
         //half = height/2-1; //2
@@ -43,11 +24,7 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     //ordinal scale for medienunternehmen
     var x0 = d3.scale.ordinal()
     	//.rangeRoundBands([0, width], 0.2); 1
-        .rangeRoundBands([height, 0], 0.2);
-
-
-    //second x scale for grouping
-    //var x1 = d3.scale.ordinal();
+        .rangeRoundBands([height, 0], 0.3);
 
     //vertikal scale for umsatz und gewinn
     var y0 = d3.scale.linear()
@@ -59,20 +36,14 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
 
     // color Scale
     var color = d3.scale.ordinal()
-    	.range(["#98abc5", "#6b486b"])
+    	.range(["#4D8091", "#6b486b"])//98abc5
 
-    //Axes
-    /*
-    var xAxis = d3.svg.axis()
-    	.scale(x0)
-    	.orient("bottom");
-
-    */
     var yAxis = d3.svg.axis()
     	.scale(y0)
     	.orient("top")//left
         .ticks(7)
-    	.tickFormat(d3.format("1s"))
+    	.tickFormat(d3.format("1s"));
+        //.replace("k",".");
     // ticks formatieren
     //http://stackoverflow.com/questions/15493303/converting-numbers-on-y-axis-to-string-with-k-for-thousand-d3-js
     var yAxis2 = d3.svg.axis()
@@ -84,15 +55,16 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     var format = d3.format("0,000");
     //var format = d3.format(".,2f")
 
-
+    var mouseLabel = "ATV";
     var tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-10,0])
         .html( function(d){
+            console.log(mouseLabel)
             if (d.name === "Mitarbeiter"){
-                return "<text>2012</br> Umsatz pro MitarbeiterIn: " + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
+                return "<text>" + mouseLabel + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
-                return "<text>2012</br>" + d.name + ": " + d.value + " Mio. €</text>"
+                return "<text>"+ mouseLabel +"2012</br>" + d.value + " Mio. €</text>"
             }
         })
 
@@ -137,7 +109,6 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
 
     	//set the domains
     	x0.domain(data.map(function(d) { return d.Unternehmen } ));
-    	//x1.domain(mediaNames).rangeRoundBands([0, x0.rangeBand()]); //check
 
     	function key( name ) {
     		return function(d) {
@@ -150,39 +121,37 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     	y0.domain([0, d3.max(umsaetze)]);
     	y1.domain([0, d3.max(mitarbeiter)+500])
 
-		svg.append( 'line' )
-			.attr("class", "line")
-			.attr("x1", half+1 )
-			.attr("x2", half+1 )
-			.attr("y1", -40 )
-			.attr("y2", height+50);
-
-
-        svg.append("rect")
+		svg.append("rect")
             .attr("class", "background1")
-            .attr("x", 10)
-            .attr("y", height-145)
-            .attr("height", 150)
-            .attr("width", width+margin.right);
+            .attr("x", -35)
+            .attr("y", height-160)
+            .attr("height", 155)
+            .attr("width", width+margin.right+margin.left);
 
-        /*
+        svg.append( 'line' )
+			.attr("class", "line")
+			.attr("x1", half )
+			.attr("x2", half )
+			.attr("y1", -10 )
+			.attr("y2", height+50);
+         
         svg.append("text")
-            .attr("y", height)
-            .attr("x", 100)
+            .attr("x", -130)
+            .attr("transform", "rotate(-90)")
+            .attr("y", 150)
             .text("ÖSTERREICH");
 
         svg.append("text")
-            .attr("y", height)
-            .attr("x", 390)
+            .attr("y", -20)
+            .attr("transform", "rotate(-90)")
+            .attr("x", -335)
             .text("DEUTSCHLAND");
-        */
-
+        
     	svg.append("g")
     		.attr("class", "y axis")
             .attr('transform', 'translate(0,' + (height +30)+')')
     		.call(yAxis)
     		.append("text")
-    		//.attr("transform", "rotate(-90)")
     		.attr("x", 60)
             .attr("y", 10)
     		.attr("dy", "0.71em")
@@ -194,7 +163,6 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     		.attr('transform', 'translate(' + half + ',' + (height + 50) +')')
     		.call(yAxis2)
        		.append("text")
-    		//.attr("transform", "rotate(-90)")
             .attr("x", 210)
     		.attr("y", 10)
     		.attr("dy", "0.71em")
@@ -215,7 +183,6 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     		.append("rect")
             .attr("class", "bar")
     		.attr("height", x0.rangeBand()) //vorher: width
-    		//.attr("x", function(d){ return x0(d.name); })
     		.attr("x", function(d){ //vorher: y
     		    if( d.name === 'Mitarbeiter' ) {
                     return half+1;
@@ -231,20 +198,16 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
     			return half - y0(d.value)
     		})
     		.attr("fill", function(d){ return color(d.name); })
+            .on("mouseover", function(d){ console.log(d.Unternehmen)} )//SIFU: wird nicht ausgeführt. Wieso?
             .on("mouseover", tip.show)
             .on("mouseout", tip.hide);
-            //remove de-tip.n divs...die behindern das neue mousover! daher hier noc ohne mouseout.
 
     	unternehmen.append( 'text' )
     	    .attr( 'class', 'label' )
     	    .attr( 'y', x0.rangeBand()-7 )
-            //.attr( 'x', function(d) { return 300-y0(d.mediaValues[0].value) +5 })
             .attr( 'x', function(d) { return (half + 15) + y1(d.mediaValues[1].value) })
     	    .attr("text-anchor", "start")
-    	    //.attr("transform", "rotate(-90)")
-    	    .text( function(d) { return d.Unternehmen } )
-            //.on("mouseover", tip.show)
-            //.on("mouseout", tip.hide);
+    	    .text( function(d) { return d.Unternehmen } );
 
         d3.selectAll("li").on("click", change);
 
@@ -260,15 +223,10 @@ Positionierung des Buttons ÜBER dem Rand des Bildes
         sortData( );
         x0.domain(data.map( function( d ) { return d.Unternehmen; }) );
 
-
-        //.map(function(d){ return d. }) hier streut es mich auf. Denn im Beispielcode wird x direkt vegeben, nicht über ein transform
-        //.copy() //was ist das?
-
         var transition = svg.transition().duration(750),
             delay = function(d,i){ return i * 50 };
 
         transition.selectAll(".unternehmen")
-            //.data(data)//
             .delay(delay)
             .attr("transform", function(d){ return "translate(0," + x0(d.Unternehmen) + ")" });
 
