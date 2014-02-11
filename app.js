@@ -45,11 +45,6 @@ Fragen SiFu:
     	.scale(y0)
     	.orient("top")//left
         .ticks(7)
-<<<<<<< HEAD
-    	.tickFormat(d3.format("1s"));
-        //.replace("k",".");
-    
-=======
     	  .tickFormat(
           function( t ) {
             if( t === 0 ) {
@@ -62,7 +57,7 @@ Fragen SiFu:
 
     // ticks formatieren
     //http://stackoverflow.com/questions/15493303/converting-numbers-on-y-axis-to-string-with-k-for-thousand-d3-js
->>>>>>> 125625b1250d16023517f9c6b86c631c47fe9ea5
+
     var yAxis2 = d3.svg.axis()
     	.scale(y1)
     	.orient("top")//left
@@ -77,21 +72,17 @@ Fragen SiFu:
           }
         );
 
-    var format = d3.format("0,000");
+    var format = d3.format("0,0");
     //var format = d3.format(".,2f")
 
     var tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-10,0])
         .html( function(d){
-<<<<<<< HEAD
-            console.log(mouseLabel)//undefined
-=======
->>>>>>> 125625b1250d16023517f9c6b86c631c47fe9ea5
             if (d.name === "Mitarbeiter"){
-                return "<text>" + d.Unternehmen + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
+                return "<text>" + d.Unternehmen + "</br>Umsatz pro MitarbeiterIn</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
-                return "<text>"+ d.Unternehmen +"2012</br>" + d.value + " Mio. €</text>"
+                return "<text>"+ d.Unternehmen +"</br>Umsatz 2012</br>" + format(d3.round(d.value)).replace( '.', ',' ) + " Mio. €</text>"
             }
         })
 
@@ -188,7 +179,6 @@ Fragen SiFu:
     	svg.append("g")
     		.attr("class", "y axis")
     		.attr('transform', 'translate(' + half + ',' + (height + 50) +')')
-            //.replace("k", "t") --> Object has no method...
     		.call(yAxis2)
        		.append("text")
             .attr("x", 210)
