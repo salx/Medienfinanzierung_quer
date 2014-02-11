@@ -119,3 +119,8 @@ svg {
 	shape-rendering: crispEdges;
 }
 
+
+.d3-tip text {
+    padding: 0;
+}
+

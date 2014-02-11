@@ -71,16 +71,14 @@ Fragen SiFu:
     var format = d3.format("0,000");
     //var format = d3.format(".,2f")
 
-    var mouseLabel = "ATV";
     var tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-10,0])
         .html( function(d){
-            console.log(mouseLabel)
             if (d.name === "Mitarbeiter"){
-                return "<text>" + mouseLabel + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
+                return "<text>" + d.Unternehmen + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
-                return "<text>"+ mouseLabel +"2012</br>" + d.value + " Mio. €</text>"
+                return "<text>"+ d.Unternehmen +"2012</br>" + d.value + " Mio. €</text>"
             }
         })
 
@@ -194,7 +192,12 @@ Fragen SiFu:
     		.attr("transform", function(d){ return "translate(0," + x0(d.Unternehmen) + ")" });
 
     	unternehmen.selectAll("rect")
-    		.data(function(d){ return d.mediaValues; })
+    		.data(function(d){
+          return d.mediaValues.map( function( e ) {
+            e.Unternehmen = d.Unternehmen;
+            return e;
+          } );
+        })
     		.enter()
     		.append("rect")
             .attr("class", "bar")
@@ -214,7 +217,6 @@ Fragen SiFu:
     			return half - y0(d.value)
     		})
     		.attr("fill", function(d){ return color(d.name); })
-            .on("mouseover", function(d){ console.log(d.Unternehmen)} )//SIFU: wird nicht ausgeführt. Wieso?
             .on("mouseover", tip.show)
             .on("mouseout", tip.hide);
 
