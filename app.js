@@ -5,10 +5,12 @@ Feedback Grafik:
 Button in ORF Farben stylen
 
 Fragen SiFu:
-- wie kann ich zwischen dem letzten AT-Balken und dem esten DE einen größeren Abstand machen (nicht einfach, wahrscheinlich)
+- wie kann ich auf die ticks ein .replace anwenden?
+- wie kann ich im mouse-over d.Unternehmen anzeigen lassen?
+- wie kann ich das sorting descending statt ascending machen?
+- CSS line-style: crisp edges oder nicht? (jetzt wird die Mittellinie immer beim Zoomen dünner)
 
 - aufräumen. und einrücken
-- line-style: crisp edges oder nicht?
 
 */
 
@@ -38,14 +40,14 @@ Fragen SiFu:
     var color = d3.scale.ordinal()
     	.range(["#4D8091", "#6b486b"])//98abc5
 
+
     var yAxis = d3.svg.axis()
     	.scale(y0)
     	.orient("top")//left
         .ticks(7)
     	.tickFormat(d3.format("1s"));
         //.replace("k",".");
-    // ticks formatieren
-    //http://stackoverflow.com/questions/15493303/converting-numbers-on-y-axis-to-string-with-k-for-thousand-d3-js
+    
     var yAxis2 = d3.svg.axis()
     	.scale(y1)
     	.orient("top")//left
@@ -60,7 +62,7 @@ Fragen SiFu:
         .attr("class", "d3-tip")
         .offset([-10,0])
         .html( function(d){
-            console.log(mouseLabel)
+            console.log(mouseLabel)//undefined
             if (d.name === "Mitarbeiter"){
                 return "<text>" + mouseLabel + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
@@ -161,6 +163,7 @@ Fragen SiFu:
     	svg.append("g")
     		.attr("class", "y axis")
     		.attr('transform', 'translate(' + half + ',' + (height + 50) +')')
+            //.replace("k", "t") --> Object has no method...
     		.call(yAxis2)
        		.append("text")
             .attr("x", 210)
