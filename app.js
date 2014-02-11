@@ -42,15 +42,31 @@ Fragen SiFu:
     	.scale(y0)
     	.orient("top")//left
         .ticks(7)
-    	.tickFormat(d3.format("1s"));
-        //.replace("k",".");
+    	  .tickFormat(
+          function( t ) {
+            if( t === 0 ) {
+              return '';
+            } else {
+              return t/1000;
+            }
+          }
+        );
+
     // ticks formatieren
     //http://stackoverflow.com/questions/15493303/converting-numbers-on-y-axis-to-string-with-k-for-thousand-d3-js
     var yAxis2 = d3.svg.axis()
     	.scale(y1)
     	.orient("top")//left
         .ticks(7)
-        .tickFormat(d3.format("1s"));
+        .tickFormat(
+          function( t ) {
+            if( t === 0 ) {
+              return '';
+            } else {
+              return t / 1000;
+            }
+          }
+        );
 
     var format = d3.format("0,000");
     //var format = d3.format(".,2f")
@@ -134,7 +150,7 @@ Fragen SiFu:
 			.attr("x2", half )
 			.attr("y1", -10 )
 			.attr("y2", height+50);
-         
+
         svg.append("text")
             .attr("x", -130)
             .attr("transform", "rotate(-90)")
@@ -146,7 +162,7 @@ Fragen SiFu:
             .attr("transform", "rotate(-90)")
             .attr("x", -335)
             .text("DEUTSCHLAND");
-        
+
     	svg.append("g")
     		.attr("class", "y axis")
             .attr('transform', 'translate(0,' + (height +30)+')')
@@ -167,7 +183,7 @@ Fragen SiFu:
     		.attr("y", 10)
     		.attr("dy", "0.71em")
     		.style("text-anchor", "end")
-    		.text("in 100.00 €");
+    		.text("in 1000 €");
 
 
     	var unternehmen = svg.selectAll(".unternehmen")
