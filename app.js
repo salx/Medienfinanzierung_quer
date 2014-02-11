@@ -45,28 +45,53 @@ Fragen SiFu:
     	.scale(y0)
     	.orient("top")//left
         .ticks(7)
+<<<<<<< HEAD
     	.tickFormat(d3.format("1s"));
         //.replace("k",".");
     
+=======
+    	  .tickFormat(
+          function( t ) {
+            if( t === 0 ) {
+              return '';
+            } else {
+              return t/1000;
+            }
+          }
+        );
+
+    // ticks formatieren
+    //http://stackoverflow.com/questions/15493303/converting-numbers-on-y-axis-to-string-with-k-for-thousand-d3-js
+>>>>>>> 125625b1250d16023517f9c6b86c631c47fe9ea5
     var yAxis2 = d3.svg.axis()
     	.scale(y1)
     	.orient("top")//left
         .ticks(7)
-        .tickFormat(d3.format("1s"));
+        .tickFormat(
+          function( t ) {
+            if( t === 0 ) {
+              return '';
+            } else {
+              return t / 1000;
+            }
+          }
+        );
 
     var format = d3.format("0,000");
     //var format = d3.format(".,2f")
 
-    var mouseLabel = "ATV";
     var tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-10,0])
         .html( function(d){
+<<<<<<< HEAD
             console.log(mouseLabel)//undefined
+=======
+>>>>>>> 125625b1250d16023517f9c6b86c631c47fe9ea5
             if (d.name === "Mitarbeiter"){
-                return "<text>" + mouseLabel + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
+                return "<text>" + d.Unternehmen + "</br>2012 pro Kopf</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
-                return "<text>"+ mouseLabel +"2012</br>" + d.value + " Mio. €</text>"
+                return "<text>"+ d.Unternehmen +"2012</br>" + d.value + " Mio. €</text>"
             }
         })
 
@@ -136,7 +161,7 @@ Fragen SiFu:
 			.attr("x2", half )
 			.attr("y1", -10 )
 			.attr("y2", height+50);
-         
+
         svg.append("text")
             .attr("x", -130)
             .attr("transform", "rotate(-90)")
@@ -148,7 +173,7 @@ Fragen SiFu:
             .attr("transform", "rotate(-90)")
             .attr("x", -335)
             .text("DEUTSCHLAND");
-        
+
     	svg.append("g")
     		.attr("class", "y axis")
             .attr('transform', 'translate(0,' + (height +30)+')')
@@ -170,7 +195,7 @@ Fragen SiFu:
     		.attr("y", 10)
     		.attr("dy", "0.71em")
     		.style("text-anchor", "end")
-    		.text("in 100.00 €");
+    		.text("in 1000 €");
 
 
     	var unternehmen = svg.selectAll(".unternehmen")
@@ -181,7 +206,12 @@ Fragen SiFu:
     		.attr("transform", function(d){ return "translate(0," + x0(d.Unternehmen) + ")" });
 
     	unternehmen.selectAll("rect")
-    		.data(function(d){ return d.mediaValues; })
+    		.data(function(d){
+          return d.mediaValues.map( function( e ) {
+            e.Unternehmen = d.Unternehmen;
+            return e;
+          } );
+        })
     		.enter()
     		.append("rect")
             .attr("class", "bar")
@@ -201,7 +231,6 @@ Fragen SiFu:
     			return half - y0(d.value)
     		})
     		.attr("fill", function(d){ return color(d.name); })
-            .on("mouseover", function(d){ console.log(d.Unternehmen)} )//SIFU: wird nicht ausgeführt. Wieso?
             .on("mouseover", tip.show)
             .on("mouseout", tip.hide);
 
