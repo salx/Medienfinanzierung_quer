@@ -10,7 +10,7 @@ ul.navigation {
 	left: 134px;
 	top: 20px;
 	height: 2em;
-	width: 800px;
+	width: 400px;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -71,8 +71,8 @@ svg {
 }
 
 .background1{
-	fill: #e2eef5;
-	border: 1px solid black;
+	fill: #fff;
+	/*border: 1px solid black;*/
 }
 
 .bar:hover{
