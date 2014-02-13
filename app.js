@@ -80,7 +80,7 @@ Fragen SiFu:
         .offset([-10,0])
         .html( function(d){
             if (d.name === "Mitarbeiter"){
-                return "<text>" + d.Unternehmen + "</br>Umsatz pro MitarbeiterIn</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
+                return "<text>" + d.Unternehmen + "</br>Umsatz pro Mitarbeiter/in</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
                 return "<text>"+ d.Unternehmen +"</br>Umsatz 2012</br>" + format(d3.round(d.value)).replace( '.', ',' ) + " Mio. €</text>"
             }
