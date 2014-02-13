@@ -174,7 +174,7 @@ Fragen SiFu:
             .attr("y", 10)
     		.attr("dy", "0.71em")
     		.style("text-anchor", "end")
-    		.text("in Mio. €");
+    		.text("in Mrd. €");
 
     	svg.append("g")
     		.attr("class", "y axis")
