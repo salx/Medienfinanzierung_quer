@@ -1,0 +1,9 @@
+rot: #b70e0b
+grau (boxen): #626e7a
+grau (hintergrund): #ecf1f6
+violett: #592a6f
+blau: #003a62
+hellblau: #006f9d
+türkis: #016b67
+gelb: #b99c00
+orange: #e7920d
