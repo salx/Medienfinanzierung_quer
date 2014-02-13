@@ -82,7 +82,7 @@ Fragen SiFu:
             if (d.name === "Mitarbeiter"){
                 return "<text>" + d.Unternehmen + "</br>Umsatz pro Mitarbeiter/in</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " €</text>"
             }else{
-                return "<text>"+ d.Unternehmen +"</br>Umsatz 2012</br>" + format(d3.round(d.value)).replace( '.', ',' ) + " Mio. €</text>"
+                return "<text>"+ d.Unternehmen +"</br>Umsatz 2012</br>" + format(d3.round(d.value)).replace( ',', '.' ) + " Mio. €</text>"
             }
         })
 
