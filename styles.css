@@ -7,7 +7,7 @@ body {
 
 ul.navigation {
 	position: absolute;
-	left: 192px;
+	left: 193px;
 	top: 16px;
 	height: 2em;
 	width: 400px;
@@ -72,6 +72,7 @@ svg {
 
 .background1{
 	fill: #fff;
+
 	/*border: 1px solid black;*/
 }
 
