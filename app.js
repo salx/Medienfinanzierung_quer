@@ -16,7 +16,7 @@ Fragen SiFu:
 
 (function(){
 	var margin = {top: 60, right: 132, bottom: 80, left: 70},
-        width = 760 - margin.left - margin.right,
+        width = 778 - margin.left - margin.right,
         height = 509 - margin.top - margin.bottom,
         //half = height/2-1; //2
         half = width/2 -1;
