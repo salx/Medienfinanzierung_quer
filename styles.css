@@ -68,8 +68,10 @@ text {
 
 svg {
 	/*border: 1px solid black;*/
-	position: absolute;
-	left:0px;
+	/*position: absolute;
+	left:0px;*/
+	/*position: relative;
+	left: -10px;*/
 }
 
 .background1{
