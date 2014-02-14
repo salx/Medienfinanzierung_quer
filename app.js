@@ -141,7 +141,7 @@ Fragen SiFu:
 
 		svg.append("rect")
             .attr("class", "background1")
-            .attr("x", -75)
+            .attr("x", -85)
             .attr("y", height-160)
             .attr("height", 155)
             .attr("width", width+margin.right+margin.left);
