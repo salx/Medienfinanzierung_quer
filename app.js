@@ -16,7 +16,7 @@ Fragen SiFu:
 
 (function(){
 	var margin = {top: 60, right: 190, bottom: 80, left: 37},
-        width = 778 - margin.left - margin.right,
+        width = 765 - margin.left - margin.right,
         height = 509 - margin.top - margin.bottom,
         //half = height/2-1; //2
         half = width/2 -1;
@@ -141,7 +141,7 @@ Fragen SiFu:
 
 		svg.append("rect")
             .attr("class", "background1")
-            .attr("x", -85)
+            .attr("x", -60)
             .attr("y", height-160)
             .attr("height", 155)
             .attr("width", width+margin.right+margin.left);
